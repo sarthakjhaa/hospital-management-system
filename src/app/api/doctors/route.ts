@@ -98,6 +98,14 @@ export async function GET(req: NextRequest) {
 
     const totalPages = Math.ceil(totalCount / limit) || 1;
 
+    let dbHost = 'NONE';
+    let dbName = 'NONE';
+    try {
+      const u = new URL(process.env.DATABASE_URL || '');
+      dbHost = u.hostname.length > 6 ? u.hostname.substring(0, 4) + '***' + u.hostname.substring(u.hostname.length - 8) : u.hostname;
+      dbName = u.pathname.replace(/^\//, '');
+    } catch(e) {}
+
     return NextResponse.json({
       doctors,
       allDoctorsCount: totalCount,
@@ -108,6 +116,8 @@ export async function GET(req: NextRequest) {
         totalCount,
         totalPages,
       },
+      dbHost,
+      dbName,
     });
   } catch (error) {
     console.error('Fetch doctors error:', error);
