@@ -12,39 +12,69 @@ export async function POST(req: NextRequest) {
     const parseResult = RegisterPatientSchema.safeParse(body);
 
     if (!parseResult.success) {
-      return NextResponse.json(
-        { error: 'Validation failed', details: parseResult.error.flatten() },
-        { status: 400 }
-      );
+      const firstIssue = parseResult.error.issues[0];
+      const errorMessage = firstIssue ? firstIssue.message : 'Invalid registration details provided';
+      return NextResponse.json({ error: errorMessage }, { status: 400 });
     }
 
-    const { email, password, name, phone, age, gender, address, emergencyContact, bloodGroup, medicalHistory } =
-      parseResult.data;
+    const {
+      email,
+      password,
+      name,
+      phone,
+      age,
+      gender,
+      address,
+      emergencyContact,
+      bloodGroup,
+      medicalHistory,
+    } = parseResult.data;
 
-    const existingUser = await prisma.user.findUnique({ where: { email } });
+    const normalizedEmail = email.toLowerCase().trim();
+    const normalizedPhone = phone.trim();
+
+    // Check duplicate email or phone number
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        OR: [{ email: normalizedEmail }, { phone: normalizedPhone }],
+      },
+    });
+
     if (existingUser) {
-      return NextResponse.json({ error: 'An account with this email already exists' }, { status: 400 });
+      if (existingUser.email.toLowerCase() === normalizedEmail) {
+        return NextResponse.json(
+          { error: 'An account with this email address already exists. Please sign in instead.' },
+          { status: 400 }
+        );
+      }
+      if (existingUser.phone === normalizedPhone) {
+        return NextResponse.json(
+          { error: 'An account with this phone number already exists. Please use another phone number.' },
+          { status: 400 }
+        );
+      }
     }
 
     const passwordHash = await hashPassword(password);
-    const patientCode = `PAT-${Math.floor(10000 + Math.random() * 90000)}`;
+    // Collision-proof unique patient ID code
+    const patientCode = `PAT-${Date.now().toString().slice(-6)}${Math.floor(1000 + Math.random() * 9000)}`;
 
     const user = await prisma.user.create({
       data: {
-        email,
+        email: normalizedEmail,
         passwordHash,
-        name,
-        phone,
+        name: name.trim(),
+        phone: normalizedPhone,
         role: Role.PATIENT,
         patientProfile: {
           create: {
             patientIdCode: patientCode,
             age,
-            gender,
-            address,
-            emergencyContact,
-            bloodGroup,
-            medicalHistory,
+            gender: gender || 'Male',
+            address: address || 'Not specified',
+            emergencyContact: emergencyContact || 'Not specified',
+            bloodGroup: bloodGroup || 'O+',
+            medicalHistory: medicalHistory || '',
           },
         },
       },
@@ -80,12 +110,49 @@ export async function POST(req: NextRequest) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: 60 * 60 * 24,
+      maxAge: 60 * 60 * 24, // 24 hours
     });
 
     return response;
-  } catch (error) {
-    console.error('Registration error:', error);
-    return NextResponse.json({ error: 'Failed to create patient account' }, { status: 500 });
+  } catch (error: any) {
+    console.error('Registration API Error:', error);
+
+    // Handle Prisma unique constraint violations (P2002)
+    if (error?.code === 'P2002') {
+      const target = error?.meta?.target;
+      if (Array.isArray(target) && target.includes('email')) {
+        return NextResponse.json(
+          { error: 'An account with this email address already exists. Please sign in instead.' },
+          { status: 400 }
+        );
+      }
+      if (Array.isArray(target) && target.includes('phone')) {
+        return NextResponse.json(
+          { error: 'An account with this phone number already exists. Please try another phone number.' },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Handle Database Connection Failures
+    if (
+      error?.message?.includes('Can\'t reach database server') ||
+      error?.message?.includes('ECONNREFUSED') ||
+      error?.code === 'P1001'
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            'Database service unavailable. Please check your production DATABASE_URL connection in Vercel Environment Variables.',
+        },
+        { status: 503 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: error?.message || 'Could not complete patient registration. Please try again.' },
+      { status: 500 }
+    );
   }
 }
+

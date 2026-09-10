@@ -7,14 +7,14 @@ export const LoginSchema = z.object({
 });
 
 export const RegisterPatientSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
+  name: z.string().min(2, 'Full name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
-  phone: z.string().min(10, 'Valid phone number is required'),
-  age: z.number().int().min(1).max(120),
-  gender: z.enum(['Male', 'Female', 'Other']),
-  address: z.string().min(5, 'Address is required'),
-  emergencyContact: z.string().min(5, 'Emergency contact is required'),
+  phone: z.string().min(10, 'Please enter a valid 10-digit phone number'),
+  age: z.number().int().min(1, 'Age must be at least 1').max(120, 'Please enter a realistic age'),
+  gender: z.enum(['Male', 'Female', 'Other']).default('Male'),
+  address: z.string().min(2, 'Address is required').default('Not specified'),
+  emergencyContact: z.string().min(2, 'Emergency contact is required').default('Not specified'),
   bloodGroup: z.string().optional(),
   medicalHistory: z.string().optional(),
 });
