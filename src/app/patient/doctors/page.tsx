@@ -85,8 +85,17 @@ export default function DoctorFinderPage() {
   const fetchDoctorCatalog = async () => {
     setLoading(true);
     try {
+      const params = new URLSearchParams();
+      if (stateFilter !== 'ALL') params.set('state', stateFilter);
+      if (districtFilter !== 'ALL') params.set('district', districtFilter);
+      if (cityFilter !== 'ALL') params.set('city', cityFilter);
+      if (hospitalFilter !== 'ALL') params.set('hospital', hospitalFilter);
+      if (deptFilter !== 'ALL') params.set('departmentId', deptFilter);
+      if (languageFilter !== 'ALL') params.set('language', languageFilter);
+      if (search) params.set('query', search);
+
       const [docRes, deptRes] = await Promise.all([
-        fetch('/api/doctors'),
+        fetch(`/api/doctors?${params.toString()}`),
         fetch('/api/departments'),
       ]);
 
@@ -107,7 +116,7 @@ export default function DoctorFinderPage() {
 
   useEffect(() => {
     fetchDoctorCatalog();
-  }, []);
+  }, [stateFilter, districtFilter, cityFilter, hospitalFilter, deptFilter, languageFilter, search]);
 
   // Dynamic Location Cascading
   const allStates = getAllStatesAndUTs();

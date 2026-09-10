@@ -18,24 +18,52 @@ export async function GET(req: NextRequest) {
     const hospital = searchParams.get('hospital');
     const language = searchParams.get('language');
 
-    const page = parseInt(searchParams.get('page') || '1', 10);
-    const limit = parseInt(searchParams.get('limit') || '0', 10);
+    const page = Math.max(parseInt(searchParams.get('page') || '1', 10), 1);
+    const maxLimit = parseInt(searchParams.get('limit') || '300', 10);
+    const limit = maxLimit > 0 ? Math.min(maxLimit, 300) : 300;
 
-    const where: any = {};
-    if (departmentId) {
-      where.departmentId = departmentId;
+    const andConditions: any[] = [];
+
+    if (departmentId && departmentId !== 'ALL') {
+      andConditions.push({ departmentId });
     }
-    if (query) {
-      where.OR = [
-        { user: { name: { contains: query } } },
-        { specialty: { contains: query } },
-        { department: { name: { contains: query } } },
-        { bio: { contains: query } },
-      ];
+
+    if (query && query.trim()) {
+      const trimmedQuery = query.trim();
+      andConditions.push({
+        OR: [
+          { user: { name: { contains: trimmedQuery } } },
+          { specialty: { contains: trimmedQuery } },
+          { department: { name: { contains: trimmedQuery } } },
+          { bio: { contains: trimmedQuery } },
+        ],
+      });
     }
+
+    if (state && state !== 'ALL') {
+      andConditions.push({ bio: { contains: state } });
+    }
+    if (district && district !== 'ALL') {
+      andConditions.push({ bio: { contains: district } });
+    }
+    if (city && city !== 'ALL') {
+      andConditions.push({ bio: { contains: city } });
+    }
+    if (hospital && hospital !== 'ALL') {
+      andConditions.push({ bio: { contains: hospital } });
+    }
+    if (language && language !== 'ALL') {
+      andConditions.push({ bio: { contains: language } });
+    }
+
+    const where = andConditions.length > 0 ? { AND: andConditions } : {};
+
+    const totalCount = await prisma.doctorProfile.count({ where });
 
     const rawDoctors = await prisma.doctorProfile.findMany({
       where,
+      take: limit,
+      skip: (page - 1) * limit,
       include: {
         user: {
           select: { id: true, name: true, email: true, phone: true },
@@ -46,7 +74,7 @@ export async function GET(req: NextRequest) {
       orderBy: { rating: 'desc' },
     });
 
-    let doctors = rawDoctors.map((doc) => {
+    const doctors = rawDoctors.map((doc) => {
       const parsedMeta = parseDoctorBio(doc.bio);
       return {
         ...doc,
@@ -54,46 +82,19 @@ export async function GET(req: NextRequest) {
       };
     });
 
-    // Apply location, hospital & language filters
-    if (state && state !== 'ALL') {
-      doctors = doctors.filter((d) => d.parsedMeta.state.toLowerCase() === state.toLowerCase());
-    }
-    if (district && district !== 'ALL') {
-      doctors = doctors.filter((d) => d.parsedMeta.district.toLowerCase() === district.toLowerCase());
-    }
-    if (city && city !== 'ALL') {
-      doctors = doctors.filter((d) => d.parsedMeta.city.toLowerCase() === city.toLowerCase());
-    }
-    if (hospital && hospital !== 'ALL') {
-      doctors = doctors.filter((d) => d.parsedMeta.hospital.toLowerCase() === hospital.toLowerCase());
-    }
-    if (language && language !== 'ALL') {
-      doctors = doctors.filter((d) =>
-        d.parsedMeta.languages.some((l) => l.toLowerCase() === language.toLowerCase())
-      );
-    }
-
-    const totalCount = doctors.length;
-    let paginatedDoctors = doctors;
-
-    let totalPages = 1;
-    if (limit > 0) {
-      totalPages = Math.ceil(totalCount / limit) || 1;
-      const startIndex = (page - 1) * limit;
-      paginatedDoctors = doctors.slice(startIndex, startIndex + limit);
-    }
-
     const departments = await prisma.department.findMany({
       orderBy: { name: 'asc' },
     });
 
+    const totalPages = Math.ceil(totalCount / limit) || 1;
+
     return NextResponse.json({
-      doctors: paginatedDoctors,
+      doctors,
       allDoctorsCount: totalCount,
       departments,
       pagination: {
         page,
-        limit: limit > 0 ? limit : totalCount,
+        limit,
         totalCount,
         totalPages,
       },
