@@ -27,7 +27,7 @@ const lastNames = [
 async function main() {
   console.log('🌱 Starting Comprehensive Database Seeding across all 23 Medical Specialties...');
 
-  // Clear existing records in correct relation order
+  // Clear doctor and system records while preserving existing patient user accounts & profiles
   await prisma.payment.deleteMany();
   await prisma.billItem.deleteMany();
   await prisma.bill.deleteMany();
@@ -39,12 +39,17 @@ async function main() {
   await prisma.medicalRecord.deleteMany();
   await prisma.appointment.deleteMany();
   await prisma.doctorSchedule.deleteMany();
-  await prisma.patientProfile.deleteMany();
   await prisma.doctorProfile.deleteMany();
   await prisma.department.deleteMany();
   await prisma.notification.deleteMany();
   await prisma.auditLog.deleteMany();
-  await prisma.user.deleteMany();
+  await prisma.user.deleteMany({
+    where: {
+      role: {
+        in: [Role.ADMIN, Role.DOCTOR, Role.NURSE, Role.RECEPTIONIST, Role.PHARMACIST],
+      },
+    },
+  });
 
   const defaultPasswordHash = await bcrypt.hash('Password@123', 10);
   const adminPasswordHash = await bcrypt.hash('Admin@123', 10);
