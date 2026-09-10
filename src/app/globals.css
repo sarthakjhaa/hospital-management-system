@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
+}
+
+/* Hide Next.js Development Indicator ("N" icon) and Turbopack Dev Overlay */
+nextjs-portal,
+#nextjs-dev-tools,
+[data-nextjs-portal],
+[data-nextjs-toast],
+[data-nextjs-dialog-overlay],
+[data-nextjs-toast-wrapper] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  header, sidebar, nav, button {
+    display: none !important;
+  }
+}

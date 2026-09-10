@@ -1,0 +1,56 @@
+{
+  "sorted_middleware": [],
+  "middleware": {
+    "/": {
+      "files": [
+        "server/edge/chunks/node_modules_1jf29ke._.js",
+        "server/edge/chunks/[root-of-the-server]__13jvavz._.js",
+        "server/edge/chunks/turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_06l3j0t.js"
+      ],
+      "name": "middleware",
+      "page": "/",
+      "entrypoint": "server/edge/chunks/turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_06l3j0t.js",
+      "matchers": [
+        {
+          "regexp": "/:nextData(_next/data/[^/]{1,})?/admin/:path*{(\\.json|\\.rsc|\\.segments/.+\\.segment\\.rsc)}?",
+          "originalSource": "/admin/:path*"
+        },
+        {
+          "regexp": "/:nextData(_next/data/[^/]{1,})?/doctor/:path*{(\\.json|\\.rsc|\\.segments/.+\\.segment\\.rsc)}?",
+          "originalSource": "/doctor/:path*"
+        },
+        {
+          "regexp": "/:nextData(_next/data/[^/]{1,})?/nurse/:path*{(\\.json|\\.rsc|\\.segments/.+\\.segment\\.rsc)}?",
+          "originalSource": "/nurse/:path*"
+        },
+        {
+          "regexp": "/:nextData(_next/data/[^/]{1,})?/receptionist/:path*{(\\.json|\\.rsc|\\.segments/.+\\.segment\\.rsc)}?",
+          "originalSource": "/receptionist/:path*"
+        },
+        {
+          "regexp": "/:nextData(_next/data/[^/]{1,})?/pharmacist/:path*{(\\.json|\\.rsc|\\.segments/.+\\.segment\\.rsc)}?",
+          "originalSource": "/pharmacist/:path*"
+        },
+        {
+          "regexp": "/:nextData(_next/data/[^/]{1,})?/patient/:path*{(\\.json|\\.rsc|\\.segments/.+\\.segment\\.rsc)}?",
+          "originalSource": "/patient/:path*"
+        },
+        {
+          "regexp": "/:nextData(_next/data/[^/]{1,})?/dashboard/:path*{(\\.json|\\.rsc|\\.segments/.+\\.segment\\.rsc)}?",
+          "originalSource": "/dashboard/:path*"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "development",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "1osGm8iYFqepXRJRu3xgjxskF+IZ8ZLIlOKJyHG3TOE=",
+        "__NEXT_PREVIEW_MODE_ID": "e4d52dfb8e3b24fa3d0cb3dac67d14da",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "a39a4b6e2d6eae0d187aeb313ac560011b5e452b475d2469a2e177b8139648f8",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "a2d791f2775c090aa972f9795c68f03bf01b62d23a4d988a9acf1d95440cf574"
+      }
+    }
+  },
+  "instrumentation": null,
+  "functions": {}
+}
