@@ -1,1 +1,0 @@
-self.__RSC_SERVER_MANIFEST="{\n  \"node\": {},\n  \"edge\": {},\n  \"encryptionKey\": \"1osGm8iYFqepXRJRu3xgjxskF+IZ8ZLIlOKJyHG3TOE=\"\n}"
