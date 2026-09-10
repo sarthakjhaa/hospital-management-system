@@ -25,7 +25,17 @@ export async function GET(req: NextRequest) {
     const andConditions: any[] = [];
 
     if (departmentId && departmentId !== 'ALL') {
-      andConditions.push({ departmentId });
+      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(departmentId);
+      if (isUuid) {
+        andConditions.push({ departmentId });
+      } else {
+        andConditions.push({
+          OR: [
+            { department: { name: { contains: departmentId } } },
+            { specialty: { contains: departmentId } },
+          ],
+        });
+      }
     }
 
     if (query && query.trim()) {
