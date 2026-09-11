@@ -121,7 +121,7 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error('Fetch doctors error:', error);
-    return NextResponse.json({ error: 'Failed to fetch doctors' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch doctors', details: (error as any)?.message || String(error) }, { status: 500 });
   }
 }
 
