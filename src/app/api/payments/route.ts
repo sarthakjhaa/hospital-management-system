@@ -117,62 +117,79 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Demo Payment Gateway: Transaction simulated failure. Please retry payment.' }, { status: 400 });
     }
 
+    // Pre-generate transaction ID outside transaction
+    const txnPrefix = method === 'UPI' ? 'UPI' : method === 'CARD' ? 'CARD' : 'WLT';
+    const transactionId = `TXN-DEMO-${txnPrefix}-${Math.floor(100000 + Math.random() * 900000)}`;
+
     // ATOMIC TRANSACTION FOR DEMO PAYMENT PROCESSING (PART 13)
-    const result = await prisma.$transaction(async (tx) => {
-      const txnPrefix = method === 'UPI' ? 'UPI' : method === 'CARD' ? 'CARD' : 'WLT';
-      const transactionId = `TXN-DEMO-${txnPrefix}-${Math.floor(100000 + Math.random() * 900000)}`;
-
-      // 1. Create Payment Record
-      const payment = await tx.payment.create({
-        data: {
-          transactionId,
-          billId,
-          amount: bill.grandTotal, // Enforce server-calculated grand total (PART 21)
-          method,
-          status: 'SUCCESS',
-        },
-      });
-
-      // 2. Update Bill Status to PAID
-      const updatedBill = await tx.bill.update({
-        where: { id: billId },
-        data: { paymentStatus: PaymentStatus.PAID },
-        include: {
-          items: true,
-          patient: { include: { user: { select: { name: true, email: true } } } },
-        },
-      });
-
-      // 3. If bill is linked to a Medicine Order, update Order Status to DISPENSED
-      if (bill.orderId) {
-        await tx.medicineOrder.update({
-          where: { id: bill.orderId },
-          data: { status: OrderStatus.DISPENSED },
+    const result = await prisma.$transaction(
+      async (tx) => {
+        // 0. Double-check bill status inside transaction for idempotency / double-click protection
+        const currentBill = await tx.bill.findUnique({
+          where: { id: billId },
+          select: { paymentStatus: true, orderId: true, billNo: true, grandTotal: true },
         });
-      }
 
-      // 4. Create Notification (PART 23)
-      if (bill.patient?.user?.id) {
-        await tx.notification.create({
+        if (!currentBill) {
+          throw new Error('Bill invoice not found');
+        }
+
+        if (currentBill.paymentStatus === PaymentStatus.PAID) {
+          throw new Error('This bill has already been settled and paid');
+        }
+
+        // 1. Create Payment Record
+        const payment = await tx.payment.create({
           data: {
-            userId: bill.patient.user.id,
-            title: 'Payment Successful',
-            message: `Payment successful for Invoice #${bill.billNo}. Transaction reference: ${transactionId}.`,
+            transactionId,
+            billId,
+            amount: bill.grandTotal, // Enforce server-calculated grand total (PART 21)
+            method,
+            status: 'SUCCESS',
           },
         });
+
+        // 2. Update Bill Status to PAID
+        const updatedBill = await tx.bill.update({
+          where: { id: billId },
+          data: { paymentStatus: PaymentStatus.PAID },
+        });
+
+        // 3. If bill is linked to a Medicine Order, update Order Status to DISPENSED
+        if (bill.orderId) {
+          await tx.medicineOrder.update({
+            where: { id: bill.orderId },
+            data: { status: OrderStatus.DISPENSED },
+          });
+        }
+
+        // 4. Create Notification (PART 23)
+        if (bill.patient?.user?.id) {
+          await tx.notification.create({
+            data: {
+              userId: bill.patient.user.id,
+              title: 'Payment Successful',
+              message: `Payment successful for Invoice #${bill.billNo}. Transaction reference: ${transactionId}.`,
+            },
+          });
+        }
+
+        // 5. Audit Log Entry (PART 24)
+        await tx.auditLog.create({
+          data: {
+            userId: session.id,
+            action: 'DEMO_PAYMENT_PROCESSED',
+            details: `Simulated DEMO ${method} payment of $${bill.grandTotal} for Invoice #${bill.billNo} (Txn: ${transactionId}).`,
+          },
+        });
+
+        return { payment, bill: updatedBill, transactionId };
+      },
+      {
+        timeout: 15000,
+        maxWait: 5000,
       }
-
-      // 5. Audit Log Entry (PART 24)
-      await tx.auditLog.create({
-        data: {
-          userId: session.id,
-          action: 'DEMO_PAYMENT_PROCESSED',
-          details: `Simulated DEMO ${method} payment of $${bill.grandTotal} for Invoice #${bill.billNo} (Txn: ${transactionId}).`,
-        },
-      });
-
-      return { payment, bill: updatedBill, transactionId };
-    });
+    );
 
     return NextResponse.json({
       message: 'DEMO Payment processed successfully!',
