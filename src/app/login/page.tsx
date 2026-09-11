@@ -326,43 +326,43 @@ export default function LoginPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
           {/* Left Information Section */}
           <div className="lg:col-span-5 space-y-5 text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 border border-blue-200 rounded-full text-blue-700 text-xs font-semibold">
-              <Stethoscope className="h-4 w-4 text-blue-600" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 rounded-full text-blue-700 dark:text-blue-300 text-xs font-semibold">
+              <Stethoscope className="h-4 w-4 text-blue-600 dark:text-blue-400" />
               <span>Healthcare Services Portal</span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-              Welcome to <span className="text-blue-600">Hospital Portal</span>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+              Welcome to <span className="text-blue-600 dark:text-blue-400">Hospital Portal</span>
             </h1>
 
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               Access appointments, medical records and healthcare services in one place.
             </p>
 
             <div className="space-y-3 pt-2">
-              <div className="flex items-center gap-3 p-3.5 bg-white border border-slate-200 rounded-xl shadow-2-[0_1px_2px_rgba(0,0,0,0.04)]">
-                <div className="p-2 bg-blue-50 text-blue-600 rounded-lg shrink-0">
+              <div className="flex items-center gap-3 p-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2-[0_1px_2px_rgba(0,0,0,0.04)]">
+                <div className="p-2 bg-blue-50 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 rounded-lg shrink-0">
                   <CheckCircle2 className="h-4 w-4" />
                 </div>
-                <span className="text-xs font-bold text-slate-800">
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
                   Book doctor appointments
                 </span>
               </div>
 
-              <div className="flex items-center gap-3 p-3.5 bg-white border border-slate-200 rounded-xl shadow-2-[0_1px_2px_rgba(0,0,0,0.04)]">
-                <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg shrink-0">
+              <div className="flex items-center gap-3 p-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2-[0_1px_2px_rgba(0,0,0,0.04)]">
+                <div className="p-2 bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 rounded-lg shrink-0">
                   <CheckCircle2 className="h-4 w-4" />
                 </div>
-                <span className="text-xs font-bold text-slate-800">
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
                   View medical records and prescriptions
                 </span>
               </div>
 
-              <div className="flex items-center gap-3 p-3.5 bg-white border border-slate-200 rounded-xl shadow-2-[0_1px_2px_rgba(0,0,0,0.04)]">
-                <div className="p-2 bg-amber-50 text-amber-600 rounded-lg shrink-0">
+              <div className="flex items-center gap-3 p-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2-[0_1px_2px_rgba(0,0,0,0.04)]">
+                <div className="p-2 bg-amber-50 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 rounded-lg shrink-0">
                   <CheckCircle2 className="h-4 w-4" />
                 </div>
-                <span className="text-xs font-bold text-slate-800">
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
                   Manage medicines and bills
                 </span>
               </div>
@@ -371,7 +371,7 @@ export default function LoginPage() {
 
           {/* Right Login Form Card */}
           <div className="lg:col-span-7 w-full max-w-lg mx-auto lg:max-w-none">
-            <Suspense fallback={<div className="text-center py-10 text-slate-500 text-xs">Loading login portal...</div>}>
+            <Suspense fallback={<div className="text-center py-10 text-slate-500 dark:text-slate-400 text-xs">Loading login portal...</div>}>
               <LoginForm />
             </Suspense>
           </div>
@@ -379,7 +379,7 @@ export default function LoginPage() {
       </main>
 
       {/* Simple Footer */}
-      <footer className="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400">
+      <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-4 text-center text-xs text-slate-400">
         © 2026 Hospital Portal. All rights reserved.
       </footer>
     </div>

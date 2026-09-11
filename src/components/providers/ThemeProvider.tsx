@@ -16,10 +16,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('light');
 
   useEffect(() => {
+    // Sync state with document.documentElement initialized by anti-flash inline script
+    const isDark = document.documentElement.classList.contains('dark');
     const saved = localStorage.getItem('hms_theme') as Theme | null;
     if (saved === 'dark' || saved === 'light') {
       setThemeState(saved);
       document.documentElement.classList.toggle('dark', saved === 'dark');
+    } else if (isDark) {
+      setThemeState('dark');
     } else {
       const match = document.cookie.match(/hms_theme=([^;]+)/);
       if (match && (match[1] === 'dark' || match[1] === 'light')) {

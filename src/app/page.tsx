@@ -254,34 +254,34 @@ export default function LandingPage() {
       <section id="home" className="max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-14">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-7 space-y-5 text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 border border-blue-200 rounded-full text-blue-700 text-xs font-semibold">
-              <HeartPulse className="h-4 w-4 text-blue-600" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 rounded-full text-blue-700 dark:text-blue-300 text-xs font-semibold">
+              <HeartPulse className="h-4 w-4 text-blue-600 dark:text-blue-400" />
               <span>Healthcare Services Portal</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
-              Quality Healthcare, <span className="text-blue-600">Closer to You</span>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+              Quality Healthcare, <span className="text-blue-600 dark:text-blue-400">Closer to You</span>
             </h1>
 
-            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-xl">
+            <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed max-w-xl">
               Hospital Portal brings healthcare management to your fingertips. Find nearby hospitals, search doctors by specialty across India, check live schedule availability, book appointments, view digital prescriptions, and manage medical records seamlessly.
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-lg pt-1 text-xs text-slate-700 font-semibold">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-lg pt-1 text-xs text-slate-700 dark:text-slate-300 font-semibold">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <span>Find nearby hospitals & doctors</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <span>Book consultation time slots</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <span>Access digital health records</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <span>Manage prescriptions & bills</span>
               </div>
             </div>
@@ -296,7 +296,7 @@ export default function LandingPage() {
               </Link>
               <Link
                 href="/patient/doctors"
-                className="py-3 px-6 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-bold text-xs rounded-xl shadow-2-[0_1px_2px_rgba(0,0,0,0.04)] transition-all flex items-center gap-1.5"
+                className="py-3 px-6 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 font-bold text-xs rounded-xl shadow-2-[0_1px_2px_rgba(0,0,0,0.04)] transition-all flex items-center gap-1.5"
               >
                 <span>Book an Appointment</span>
                 <ChevronRight className="h-4 w-4 text-slate-400" />
@@ -305,34 +305,34 @@ export default function LandingPage() {
           </div>
 
           <div className="lg:col-span-5">
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-              <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
-                <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl border border-blue-100">
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+              <div className="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-slate-800">
+                <div className="p-2.5 bg-blue-50 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 rounded-xl border border-blue-100 dark:border-blue-900">
                   <Stethoscope className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 text-sm">India Doctor Directory</h3>
-                  <p className="text-xs text-slate-500">28 States & 8 Union Territories</p>
+                  <h3 className="font-bold text-slate-900 dark:text-white text-sm">India Doctor Directory</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">28 States & 8 Union Territories</p>
                 </div>
               </div>
 
               <div className="space-y-2.5 text-xs">
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
-                  <div className="flex items-center gap-2 text-slate-800 font-bold text-xs">
-                    <MapPin className="h-3.5 w-3.5 text-rose-500" />
+                <div className="p-3 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-1">
+                  <div className="flex items-center gap-2 text-slate-800 dark:text-slate-200 font-bold text-xs">
+                    <MapPin className="h-3.5 w-3.5 text-rose-500 dark:text-rose-400" />
                     <span>State & District Hierarchical Filter</span>
                   </div>
-                  <p className="text-slate-600 text-[11px]">
+                  <p className="text-slate-600 dark:text-slate-300 text-[11px]">
                     Select any Indian State (e.g., Bihar, Maharashtra, UP) to load all official administrative districts.
                   </p>
                 </div>
 
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
-                  <div className="flex items-center gap-2 text-slate-800 font-bold text-xs">
-                    <Building2 className="h-3.5 w-3.5 text-blue-600" />
+                <div className="p-3 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-1">
+                  <div className="flex items-center gap-2 text-slate-800 dark:text-slate-200 font-bold text-xs">
+                    <Building2 className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                     <span>Dynamic Hospital Listings</span>
                   </div>
-                  <p className="text-slate-600 text-[11px]">
+                  <p className="text-slate-600 dark:text-slate-300 text-[11px]">
                     Filter by hospital facilities in Muzaffarpur, Patna, Gaya, Pune, Lucknow, Bengaluru, and more.
                   </p>
                 </div>
@@ -353,11 +353,11 @@ export default function LandingPage() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="bg-white py-12 border-y border-slate-200">
+      <section id="services" className="bg-white dark:bg-slate-900 py-12 border-y border-slate-200 dark:border-slate-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
           <div className="text-center max-w-xl mx-auto space-y-2">
-            <h2 className="text-2xl font-bold text-slate-900">Healthcare Services</h2>
-            <p className="text-xs text-slate-600">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Healthcare Services</h2>
+            <p className="text-xs text-slate-600 dark:text-slate-300">
               Services designed to help patients manage consultations, health records, and medical care efficiently.
             </p>
           </div>
@@ -368,20 +368,20 @@ export default function LandingPage() {
               return (
                 <div
                   key={srv.title}
-                  className="p-5 rounded-2xl bg-slate-50 border border-slate-200 hover:border-slate-300 transition-all space-y-3 flex flex-col justify-between"
+                  className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all space-y-3 flex flex-col justify-between"
                 >
                   <div className="space-y-2">
-                    <div className="p-2.5 rounded-xl bg-white border border-slate-200 w-fit text-blue-600">
+                    <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 w-fit text-blue-600 dark:text-blue-400">
                       <Icon className="h-5 w-5" />
                     </div>
-                    <h3 className="text-sm font-bold text-slate-900">{srv.title}</h3>
-                    <p className="text-xs text-slate-600 leading-relaxed">{srv.desc}</p>
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white">{srv.title}</h3>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{srv.desc}</p>
                   </div>
 
                   <div className="pt-1">
                     <Link
                       href={srv.href}
-                      className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors"
+                      className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
                     >
                       <span>{srv.actionText}</span>
                       <ArrowRight className="h-3.5 w-3.5" />
@@ -398,14 +398,14 @@ export default function LandingPage() {
       <section id="doctors" className="py-12 max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900">Featured Specialists</h2>
-            <p className="text-xs text-slate-600 mt-1">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Featured Specialists</h2>
+            <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
               Consult with verified doctors across top hospital locations in India.
             </p>
           </div>
           <Link
             href="/patient/doctors"
-            className="py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl border border-slate-300 transition-all flex items-center gap-1.5"
+            className="py-2 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-bold text-xs rounded-xl border border-slate-300 dark:border-slate-700 transition-all flex items-center gap-1.5"
           >
             <span>View All Doctors</span>
             <ArrowRight className="h-3.5 w-3.5" />
@@ -416,27 +416,27 @@ export default function LandingPage() {
           {FEATURED_DOCTORS.map((doc) => (
             <div
               key={doc.name}
-              className="bg-white p-5 rounded-2xl border border-slate-200 space-y-3 shadow-2-[0_1px_2px_rgba(0,0,0,0.04)] flex flex-col justify-between"
+              className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3 shadow-2-[0_1px_2px_rgba(0,0,0,0.04)] flex flex-col justify-between"
             >
               <div className="space-y-2">
                 <div>
-                  <h3 className="text-base font-bold text-slate-900">{doc.name}</h3>
-                  <p className="text-xs text-blue-600 font-semibold mt-0.5">{doc.specialty}</p>
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white">{doc.name}</h3>
+                  <p className="text-xs text-blue-600 dark:text-blue-400 font-semibold mt-0.5">{doc.specialty}</p>
                 </div>
 
-                <div className="flex items-start gap-1.5 text-xs text-slate-700">
-                  <Building2 className="h-4 w-4 text-blue-600 shrink-0 mt-0.5" />
-                  <span className="font-bold text-slate-900">{doc.hospital}</span>
+                <div className="flex items-start gap-1.5 text-xs text-slate-700 dark:text-slate-300">
+                  <Building2 className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                  <span className="font-bold text-slate-900 dark:text-slate-100">{doc.hospital}</span>
                 </div>
 
-                <div className="flex items-start gap-1.5 text-xs text-slate-600">
-                  <MapPin className="h-4 w-4 text-rose-500 shrink-0 mt-0.5" />
+                <div className="flex items-start gap-1.5 text-xs text-slate-600 dark:text-slate-400">
+                  <MapPin className="h-4 w-4 text-rose-500 dark:text-rose-400 shrink-0 mt-0.5" />
                   <span>{doc.city}</span>
                 </div>
 
-                <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs flex justify-between items-center text-slate-700">
+                <div className="p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs flex justify-between items-center text-slate-700 dark:text-slate-300">
                   <span>{doc.exp}</span>
-                  <span className="font-mono font-extrabold text-emerald-700 text-sm">{doc.fee}</span>
+                  <span className="font-mono font-extrabold text-emerald-700 dark:text-emerald-400 text-sm">{doc.fee}</span>
                 </div>
               </div>
 
@@ -452,11 +452,11 @@ export default function LandingPage() {
       </section>
 
       {/* Featured Hospitals Section */}
-      <section id="hospitals" className="bg-white py-12 border-y border-slate-200">
+      <section id="hospitals" className="bg-white dark:bg-slate-900 py-12 border-y border-slate-200 dark:border-slate-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
           <div className="text-center max-w-xl mx-auto space-y-2">
-            <h2 className="text-2xl font-bold text-slate-900">Partner Healthcare Facilities</h2>
-            <p className="text-xs text-slate-600">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Partner Healthcare Facilities</h2>
+            <p className="text-xs text-slate-600 dark:text-slate-300">
               Integrated network of multi-specialty hospitals and medical centers across India.
             </p>
           </div>
@@ -465,25 +465,25 @@ export default function LandingPage() {
             {FEATURED_HOSPITALS.map((hosp) => (
               <div
                 key={hosp.name}
-                className="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3 flex flex-col justify-between hover:border-slate-300 transition-all"
+                className="bg-slate-50 dark:bg-slate-800/80 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3 flex flex-col justify-between hover:border-slate-300 dark:hover:border-slate-600 transition-all"
               >
                 <div className="space-y-2">
-                  <span className="text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-md inline-block">
+                  <span className="text-[10px] font-bold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/80 border border-blue-100 dark:border-blue-900 px-2 py-0.5 rounded-md inline-block">
                     {hosp.tag}
                   </span>
-                  <h3 className="text-sm font-bold text-slate-900 leading-snug">{hosp.name}</h3>
-                  <div className="flex items-center gap-1.5 text-xs text-slate-600">
-                    <MapPin className="h-3.5 w-3.5 text-rose-500 shrink-0" />
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white leading-snug">{hosp.name}</h3>
+                  <div className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300">
+                    <MapPin className="h-3.5 w-3.5 text-rose-500 dark:text-rose-400 shrink-0" />
                     <span>{hosp.location}</span>
                   </div>
-                  <p className="text-[11px] text-slate-500">{hosp.type}</p>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">{hosp.type}</p>
                 </div>
 
-                <div className="pt-2 border-t border-slate-200 flex justify-between items-center text-xs">
-                  <span className="font-semibold text-slate-700">{hosp.beds}</span>
+                <div className="pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center text-xs">
+                  <span className="font-semibold text-slate-700 dark:text-slate-300">{hosp.beds}</span>
                   <Link
                     href="/patient/doctors"
-                    className="font-bold text-blue-600 hover:text-blue-800"
+                    className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                   >
                     View Doctors →
                   </Link>
@@ -497,8 +497,8 @@ export default function LandingPage() {
       {/* How It Works Section */}
       <section id="about" className="py-12 max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
         <div className="text-center max-w-xl mx-auto space-y-2">
-          <h2 className="text-2xl font-bold text-slate-900">How It Works</h2>
-          <p className="text-xs text-slate-600">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">How It Works</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-300">
             Simple step-by-step process to book your consultation.
           </p>
         </div>
@@ -507,14 +507,14 @@ export default function LandingPage() {
           {STEPS.map((stp) => (
             <div
               key={stp.number}
-              className="bg-white p-5 rounded-2xl border border-slate-200 space-y-3 shadow-2-[0_1px_2px_rgba(0,0,0,0.04)] flex flex-col justify-between"
+              className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3 shadow-2-[0_1px_2px_rgba(0,0,0,0.04)] flex flex-col justify-between"
             >
               <div>
-                <span className="text-[11px] font-bold text-blue-600 bg-blue-50 border border-blue-100 px-2.5 py-0.5 rounded-md inline-block mb-2">
+                <span className="text-[11px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/80 border border-blue-100 dark:border-blue-900 px-2.5 py-0.5 rounded-md inline-block mb-2">
                   Step {stp.number}
                 </span>
-                <h3 className="text-sm font-bold text-slate-900">{stp.title}</h3>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">{stp.desc}</p>
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white">{stp.title}</h3>
+                <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">{stp.desc}</p>
               </div>
             </div>
           ))}
@@ -523,7 +523,7 @@ export default function LandingPage() {
 
       {/* Call to Action */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-12">
-        <div className="bg-blue-600 text-white rounded-2xl p-8 text-center max-w-3xl mx-auto space-y-4 shadow-sm">
+        <div className="bg-blue-600 dark:bg-blue-700 text-white rounded-2xl p-8 text-center max-w-3xl mx-auto space-y-4 shadow-sm">
           <h2 className="text-2xl font-bold">Ready to book your consultation?</h2>
           <p className="text-blue-100 text-xs sm:text-sm max-w-md mx-auto">
             Explore our complete doctor directory across 28 States & 8 Union Territories and schedule your appointment today.
@@ -531,7 +531,7 @@ export default function LandingPage() {
           <div>
             <Link
               href="/patient/doctors"
-              className="inline-flex items-center gap-2 py-2.5 px-6 bg-white hover:bg-slate-100 text-blue-700 font-bold text-xs rounded-xl shadow-xs transition-all"
+              className="inline-flex items-center gap-2 py-2.5 px-6 bg-white text-blue-700 hover:bg-slate-100 font-bold text-xs rounded-xl shadow-xs transition-all"
             >
               <Search className="h-4 w-4" />
               <span>Explore Doctor Directory</span>
@@ -541,61 +541,61 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="bg-white border-t border-slate-200 text-slate-600 text-xs">
+      <footer id="contact" className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="space-y-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2">
               <div className="p-1.5 bg-blue-600 text-white rounded-lg">
                 <Activity className="h-4 w-4" />
               </div>
-              <span className="font-bold text-slate-900 text-sm">Hospital Portal</span>
+              <span className="font-bold text-slate-900 dark:text-white text-sm">Hospital Portal</span>
             </Link>
-            <p className="text-slate-500 text-xs leading-relaxed">
+            <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">
               Comprehensive Healthcare Services & Clinical Management Portal.
             </p>
           </div>
 
           <div className="space-y-2">
-            <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[10px]">Quick Links</h4>
+            <h4 className="font-bold text-slate-900 dark:text-slate-200 uppercase tracking-wider text-[10px]">Quick Links</h4>
             <ul className="space-y-1.5 text-xs">
-              <li><Link href="#home" className="hover:text-blue-600 transition-colors">Home</Link></li>
-              <li><Link href="#services" className="hover:text-blue-600 transition-colors">Services</Link></li>
-              <li><Link href="/patient/doctors" className="hover:text-blue-600 transition-colors">Doctors</Link></li>
-              <li><Link href="#hospitals" className="hover:text-blue-600 transition-colors">Hospitals</Link></li>
-              <li><Link href="#contact" className="hover:text-blue-600 transition-colors">Contact</Link></li>
+              <li><Link href="#home" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</Link></li>
+              <li><Link href="#services" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Services</Link></li>
+              <li><Link href="/patient/doctors" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Doctors</Link></li>
+              <li><Link href="#hospitals" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Hospitals</Link></li>
+              <li><Link href="#contact" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact</Link></li>
             </ul>
           </div>
 
           <div className="space-y-2">
-            <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[10px]">Patient Care</h4>
+            <h4 className="font-bold text-slate-900 dark:text-slate-200 uppercase tracking-wider text-[10px]">Patient Care</h4>
             <ul className="space-y-1.5 text-xs">
-              <li><Link href="/patient/doctors" className="hover:text-blue-600 transition-colors">Doctor Directory</Link></li>
-              <li><Link href="/login" className="hover:text-blue-600 transition-colors">Book Appointment</Link></li>
-              <li><Link href="/login" className="hover:text-blue-600 transition-colors">Login</Link></li>
-              <li><Link href="/register" className="hover:text-blue-600 transition-colors">Register Account</Link></li>
+              <li><Link href="/patient/doctors" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Doctor Directory</Link></li>
+              <li><Link href="/login" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Book Appointment</Link></li>
+              <li><Link href="/login" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Login</Link></li>
+              <li><Link href="/register" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Register Account</Link></li>
             </ul>
           </div>
 
           <div className="space-y-2">
-            <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[10px]">Contact & Support</h4>
-            <div className="space-y-1.5 text-xs text-slate-500">
+            <h4 className="font-bold text-slate-900 dark:text-slate-200 uppercase tracking-wider text-[10px]">Contact & Support</h4>
+            <div className="space-y-1.5 text-xs text-slate-500 dark:text-slate-400">
               <div className="flex items-center gap-2">
-                <Phone className="h-3.5 w-3.5 text-blue-600" />
+                <Phone className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                 <span>+91 1800-11-2026</span>
               </div>
               <div className="flex items-center gap-2">
-                <Mail className="h-3.5 w-3.5 text-blue-600" />
+                <Mail className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                 <span>support@hospitalportal.in</span>
               </div>
               <div className="flex items-center gap-2">
-                <MapPin className="h-3.5 w-3.5 text-blue-600" />
+                <MapPin className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                 <span>Connaught Place, New Delhi, India</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-slate-100 py-4 text-center text-slate-400 text-[11px]">
+        <div className="border-t border-slate-100 dark:border-slate-800 py-4 text-center text-slate-400 text-[11px]">
           © {new Date().getFullYear()} Hospital Portal. All rights reserved.
         </div>
       </footer>
