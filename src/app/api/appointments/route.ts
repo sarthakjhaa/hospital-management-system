@@ -119,101 +119,107 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const doctor = await prisma.doctorProfile.findUnique({
+      where: { id: doctorId },
+      include: { user: { select: { name: true, id: true } } },
+    });
+
+    if (!doctor) {
+      return NextResponse.json({ error: 'Selected doctor account does not exist' }, { status: 400 });
+    }
+
     // 3. ATOMIC TRANSACTION FOR APPOINTMENT BOOKING & DOUBLE-BOOKING PROTECTION
-    const result = await prisma.$transaction(async (tx) => {
-      const doctor = await tx.doctorProfile.findUnique({
-        where: { id: doctorId },
-        include: { user: { select: { name: true, id: true } } },
-      });
+    const result = await prisma.$transaction(
+      async (tx) => {
+        // Re-verify slot inside transaction using same day range
+        const startOfDay = new Date(targetDate);
+        startOfDay.setHours(0, 0, 0, 0);
+        const endOfDay = new Date(targetDate);
+        endOfDay.setHours(23, 59, 59, 999);
 
-      if (!doctor) {
-        throw new Error('Selected doctor account does not exist');
-      }
-
-      // Re-verify slot inside transaction using same day range
-      const startOfDay = new Date(targetDate);
-      startOfDay.setHours(0, 0, 0, 0);
-      const endOfDay = new Date(targetDate);
-      endOfDay.setHours(23, 59, 59, 999);
-
-      const existingAppointments = await tx.appointment.findMany({
-        where: {
-          doctorId,
-          date: { gte: startOfDay, lte: endOfDay },
-          status: { in: [AppointmentStatus.PENDING, AppointmentStatus.CONFIRMED] },
-        },
-        select: { timeSlot: true },
-      });
-
-      const isConflict = existingAppointments.some((a) => normalizeSlot(a.timeSlot) === timeSlot);
-      if (isConflict) {
-        throw new Error('This time slot has just been booked. Please select another available time.');
-      }
-
-      const appointmentNo = `APT-${Math.floor(1000 + Math.random() * 9000)}`;
-
-      // Create Appointment Record (Status defaults to CONFIRMED for seamless flow)
-      const appointment = await tx.appointment.create({
-        data: {
-          appointmentNo,
-          patientId: validPatientId,
-          doctorId,
-          date: targetDate,
-          timeSlot,
-          reason,
-          symptoms,
-          status: AppointmentStatus.CONFIRMED,
-        },
-        include: {
-          patient: { include: { user: { select: { name: true, id: true } } } },
-          doctor: { include: { user: { select: { name: true } }, department: true } },
-        },
-      });
-
-      // Auto-generate consultation fee bill
-      await tx.bill.create({
-        data: {
-          billNo: `INV-${Math.floor(1000 + Math.random() * 9000)}`,
-          patientId: validPatientId,
-          appointmentId: appointment.id,
-          subtotal: doctor.consultationFee,
-          discount: 0,
-          tax: 0,
-          grandTotal: doctor.consultationFee,
-          paymentStatus: 'UNPAID',
-          items: {
-            create: [
-              {
-                description: `Consultation Fee - Dr. ${doctor.user.name} (${doctor.specialty})`,
-                amount: doctor.consultationFee,
-              },
-            ],
+        const existingAppointments = await tx.appointment.findMany({
+          where: {
+            doctorId,
+            date: { gte: startOfDay, lte: endOfDay },
+            status: { in: [AppointmentStatus.PENDING, AppointmentStatus.CONFIRMED] },
           },
-        },
-      });
+          select: { timeSlot: true },
+        });
 
-      // Create DB-backed Notifications (PART 17)
-      if (appointment.patient?.user?.id) {
-        await tx.notification.create({
+        const isConflict = existingAppointments.some((a) => normalizeSlot(a.timeSlot) === timeSlot);
+        if (isConflict) {
+          throw new Error('This time slot has just been booked. Please select another available time.');
+        }
+
+        const appointmentNo = `APT-${Math.floor(1000 + Math.random() * 9000)}`;
+
+        // Create Appointment Record (Status defaults to CONFIRMED for seamless flow)
+        const appointment = await tx.appointment.create({
           data: {
-            userId: appointment.patient.user.id,
-            title: 'Appointment Confirmed',
-            message: `Your appointment #${appointmentNo} with Dr. ${doctor.user.name} on ${targetDate.toLocaleDateString()} at ${timeSlot} is confirmed.`,
+            appointmentNo,
+            patientId: validPatientId,
+            doctorId,
+            date: targetDate,
+            timeSlot,
+            reason,
+            symptoms,
+            status: AppointmentStatus.CONFIRMED,
+          },
+          include: {
+            patient: { include: { user: { select: { name: true, id: true } } } },
+            doctor: { include: { user: { select: { name: true } }, department: true } },
           },
         });
+
+        // Auto-generate consultation fee bill
+        await tx.bill.create({
+          data: {
+            billNo: `INV-${Math.floor(1000 + Math.random() * 9000)}`,
+            patientId: validPatientId,
+            appointmentId: appointment.id,
+            subtotal: doctor.consultationFee,
+            discount: 0,
+            tax: 0,
+            grandTotal: doctor.consultationFee,
+            paymentStatus: 'UNPAID',
+            items: {
+              create: [
+                {
+                  description: `Consultation Fee - Dr. ${doctor.user.name} (${doctor.specialty})`,
+                  amount: doctor.consultationFee,
+                },
+              ],
+            },
+          },
+        });
+
+        // Create DB-backed Notifications (PART 17)
+        if (appointment.patient?.user?.id) {
+          await tx.notification.create({
+            data: {
+              userId: appointment.patient.user.id,
+              title: 'Appointment Confirmed',
+              message: `Your appointment #${appointmentNo} with Dr. ${doctor.user.name} on ${targetDate.toLocaleDateString()} at ${timeSlot} is confirmed.`,
+            },
+          });
+        }
+
+        // Audit Log Entry
+        await tx.auditLog.create({
+          data: {
+            userId: session.id,
+            action: 'APPOINTMENT_BOOKED',
+            details: `Booked appointment #${appointmentNo} for patient ${validPatientId} with Doctor Dr. ${doctor.user.name}.`,
+          },
+        });
+
+        return appointment;
+      },
+      {
+        timeout: 15000,
+        maxWait: 5000,
       }
-
-      // Audit Log Entry
-      await tx.auditLog.create({
-        data: {
-          userId: session.id,
-          action: 'APPOINTMENT_BOOKED',
-          details: `Booked appointment #${appointmentNo} for patient ${validPatientId} with Doctor Dr. ${doctor.user.name}.`,
-        },
-      });
-
-      return appointment;
-    });
+    );
 
     return NextResponse.json({ message: 'Appointment booked successfully', appointment: result });
   } catch (error: any) {
