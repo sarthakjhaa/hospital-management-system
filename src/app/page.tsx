@@ -154,92 +154,96 @@ const FEATURED_DOCTORS = [
   },
 ];
 
+import ThemeLanguageControls from '@/components/layout/ThemeLanguageControls';
+import { useI18n } from '@/lib/i18n/I18nContext';
+
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t } = useI18n();
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans selection:bg-blue-600 selection:text-white transition-colors duration-200">
       {/* Navigation Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
+      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="p-2 bg-blue-600 text-white rounded-xl shadow-sm">
+            <div className="p-2 bg-blue-600 text-white rounded-xl shadow-xs">
               <Activity className="h-5 w-5" />
             </div>
             <div>
-              <span className="text-base font-extrabold tracking-tight text-slate-900 block leading-tight">
-                Hospital Portal
+              <span className="text-base font-extrabold tracking-tight text-slate-900 dark:text-white block leading-tight">
+                {t('hospitalPortal')}
               </span>
-              <span className="text-[10px] text-slate-500 font-medium block">
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium block">
                 Healthcare Services & Clinical Management
               </span>
             </div>
           </Link>
 
           {/* Desktop Links */}
-          <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-600">
-            <Link href="#home" className="hover:text-blue-600 transition-colors">Home</Link>
-            <Link href="#services" className="hover:text-blue-600 transition-colors">Services</Link>
-            <Link href="/patient/doctors" className="hover:text-blue-600 transition-colors flex items-center gap-1">
-              <Search className="h-3.5 w-3.5 text-blue-600" />
-              <span>Doctors</span>
+          <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-600 dark:text-slate-300">
+            <Link href="#home" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{t('home')}</Link>
+            <Link href="#services" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{t('servicesHeading')}</Link>
+            <Link href="/patient/doctors" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-1">
+              <Search className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+              <span>{t('doctors')}</span>
             </Link>
-            <Link href="#hospitals" className="hover:text-blue-600 transition-colors">Hospitals</Link>
-            <Link href="#about" className="hover:text-blue-600 transition-colors">About</Link>
-            <Link href="#contact" className="hover:text-blue-600 transition-colors">Contact</Link>
+            <Link href="#hospitals" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{t('hospitalsHeading')}</Link>
           </nav>
 
-          {/* Action Buttons */}
-          <div className="hidden md:flex items-center gap-2.5">
+          {/* Action Buttons, Theme & Language Controls */}
+          <div className="hidden md:flex items-center gap-3">
+            <ThemeLanguageControls />
             <Link
               href="/login"
-              className="py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs rounded-xl border border-slate-300 transition-all"
+              className="py-2 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-semibold text-xs rounded-xl border border-slate-300 dark:border-slate-700 transition-all"
             >
-              Login
+              {t('login')}
             </Link>
             <Link
               href="/register"
-              className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center gap-1.5"
+              className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center gap-1.5"
             >
-              <span>Get Started</span>
+              <span>{t('getStarted')}</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 border border-slate-200"
-          >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          {/* Mobile Controls & Menu Toggle */}
+          <div className="flex md:hidden items-center gap-2">
+            <ThemeLanguageControls />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800"
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-3 shadow-md">
-            <nav className="flex flex-col space-y-2 text-xs font-semibold text-slate-700">
-              <Link href="#home" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-600">Home</Link>
-              <Link href="#services" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-600">Services</Link>
-              <Link href="/patient/doctors" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-600">Doctors</Link>
-              <Link href="#hospitals" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-600">Hospitals</Link>
-              <Link href="#about" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-600">About</Link>
-              <Link href="#contact" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-600">Contact</Link>
+          <div className="md:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-4 space-y-3 shadow-md">
+            <nav className="flex flex-col space-y-2 text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <Link href="#home" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-600 dark:hover:text-blue-400">{t('home')}</Link>
+              <Link href="#services" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-600 dark:hover:text-blue-400">{t('servicesHeading')}</Link>
+              <Link href="/patient/doctors" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-600 dark:hover:text-blue-400">{t('findDoctor')}</Link>
+              <Link href="#hospitals" onClick={() => setMobileMenuOpen(false)} className="py-1 hover:text-blue-600 dark:hover:text-blue-400">{t('hospitalsHeading')}</Link>
             </nav>
-            <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
+            <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2">
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-2 bg-slate-100 text-slate-800 font-bold text-xs rounded-xl border border-slate-300"
+                className="w-full text-center py-2 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-bold text-xs rounded-xl border border-slate-300 dark:border-slate-700"
               >
-                Login
+                {t('login')}
               </Link>
               <Link
                 href="/register"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-2 bg-blue-600 text-white font-bold text-xs rounded-xl shadow-sm"
+                className="w-full text-center py-2 bg-blue-600 text-white font-bold text-xs rounded-xl shadow-xs"
               >
-                Get Started
+                {t('getStarted')}
               </Link>
             </div>
           </div>

@@ -193,24 +193,24 @@ export default function DemoPaymentModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs transition-opacity">
-      <div className="bg-white border border-slate-200 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative overflow-hidden flex flex-col max-h-[92vh] text-slate-900 dark:text-slate-100 transition-colors">
         {/* Header Bar */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-5 shrink-0">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-5 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-blue-50 text-blue-600 rounded-2xl border border-blue-100 shrink-0">
+            <div className="p-2.5 bg-blue-50 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400 rounded-2xl border border-blue-100 dark:border-blue-800 shrink-0">
               <ShieldCheck className="h-6 w-6" />
             </div>
             <div>
-              <h3 className="text-lg font-extrabold text-slate-900 leading-tight">Complete Payment</h3>
-              <p className="text-xs text-slate-500 font-medium mt-0.5">
+              <h3 className="text-lg font-extrabold text-slate-900 dark:text-white leading-tight">Complete Payment</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">
                 Choose your preferred payment method
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+            className="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
             aria-label="Close"
           >
             <X className="h-5 w-5" />
@@ -222,26 +222,26 @@ export default function DemoPaymentModal({
           {view === 'FORM' ? (
             <div className="space-y-6">
               {/* Top Banner Summary */}
-              <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 flex flex-wrap justify-between items-center gap-3 text-xs">
+              <div className="bg-slate-50 dark:bg-slate-800/80 rounded-2xl p-4 border border-slate-200 dark:border-slate-700 flex flex-wrap justify-between items-center gap-3 text-xs">
                 <div>
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
+                  <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
                     Invoice Number
                   </span>
-                  <p className="text-sm font-black text-slate-900 font-mono mt-0.5">
+                  <p className="text-sm font-black text-slate-900 dark:text-white font-mono mt-0.5">
                     {bill.billNo}
                   </p>
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
+                  <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
                     Hospital
                   </span>
-                  <p className="text-xs font-bold text-slate-800 mt-0.5">Hospital Portal</p>
+                  <p className="text-xs font-bold text-slate-800 dark:text-slate-200 mt-0.5">Hospital Portal</p>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
+                  <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
                     Amount Payable
                   </span>
-                  <p className="text-xl font-black text-emerald-600 font-mono mt-0.5">
+                  <p className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono mt-0.5">
                     {formatINR(bill.grandTotal)}
                   </p>
                 </div>

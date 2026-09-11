@@ -28,6 +28,10 @@ import {
   CheckCheck,
 } from 'lucide-react';
 
+import ThemeLanguageControls from './ThemeLanguageControls';
+import { useI18n } from '@/lib/i18n/I18nContext';
+import { TranslationKey } from '@/lib/i18n/dictionary';
+
 interface UserSessionData {
   id: string;
   name: string;
@@ -94,18 +98,40 @@ const ROLE_NAV_ITEMS: Record<string, Array<{ label: string; href: string; icon: 
   ],
 };
 
+const NAV_KEY_MAP: Record<string, TranslationKey> = {
+  Dashboard: 'dashboard',
+  Patients: 'patients',
+  Doctors: 'doctors',
+  Departments: 'departments',
+  Appointments: 'appointments',
+  'Medical Records': 'medicalRecords',
+  Pharmacy: 'pharmacy',
+  'Medicine Orders': 'medicineOrders',
+  Billing: 'bills',
+  Payments: 'payments',
+  Reports: 'reports',
+  Users: 'users',
+  'Audit Logs': 'auditLogs',
+  Settings: 'settings',
+  Profile: 'profile',
+  Prescriptions: 'prescriptions',
+  'Find Doctor': 'findDoctor',
+  Bills: 'bills',
+};
+
 const ROLE_BADGE_COLORS: Record<string, string> = {
-  ADMIN: 'bg-rose-50 text-rose-700 border-rose-200',
-  DOCTOR: 'bg-blue-50 text-blue-700 border-blue-200',
-  NURSE: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-  RECEPTIONIST: 'bg-amber-50 text-amber-700 border-amber-200',
-  PHARMACIST: 'bg-purple-50 text-purple-700 border-purple-200',
-  PATIENT: 'bg-cyan-50 text-cyan-700 border-cyan-200',
+  ADMIN: 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/70 dark:text-rose-300 dark:border-rose-800',
+  DOCTOR: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/70 dark:text-blue-300 dark:border-blue-800',
+  NURSE: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800',
+  RECEPTIONIST: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-800',
+  PHARMACIST: 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/70 dark:text-purple-300 dark:border-purple-800',
+  PATIENT: 'bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-950/70 dark:text-cyan-300 dark:border-cyan-800',
 };
 
 export default function DashboardShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
+  const { t } = useI18n();
 
   const [user, setUser] = useState<UserSessionData | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -200,17 +226,17 @@ export default function DashboardShell({ children }: { children: React.ReactNode
   const navItems = user ? ROLE_NAV_ITEMS[user.role] || [] : [];
   const searchPlaceholder =
     user?.role === 'PATIENT'
-      ? 'Search doctors, appointments, medicines...'
-      : 'Search patients, doctors, records, orders...';
+      ? `${t('search')} ${t('doctors').toLowerCase()}, ${t('appointments').toLowerCase()}...`
+      : `${t('search')} ${t('patients').toLowerCase()}, ${t('doctors').toLowerCase()}...`;
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200">
       {/* Top Navbar */}
-      <header className="h-16 bg-white border-b border-slate-200 sticky top-0 z-40 px-4 sm:px-6 flex items-center justify-between shadow-2-[0_1px_2px_rgba(0,0,0,0.04)]">
+      <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 px-4 sm:px-6 flex items-center justify-between shadow-xs">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-slate-500 hover:text-slate-900 rounded-lg hover:bg-slate-100"
+            className="md:hidden p-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -218,8 +244,8 @@ export default function DashboardShell({ children }: { children: React.ReactNode
             <div className="p-1.5 bg-blue-600 text-white rounded-xl shadow-xs">
               <Activity className="h-5 w-5" />
             </div>
-            <span className="font-extrabold tracking-tight text-slate-900 hidden sm:inline text-base">
-              Hospital Portal
+            <span className="font-extrabold tracking-tight text-slate-900 dark:text-white hidden sm:inline text-base">
+              {t('hospitalPortal')}
             </span>
           </Link>
         </div>
@@ -232,33 +258,33 @@ export default function DashboardShell({ children }: { children: React.ReactNode
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={searchPlaceholder}
-              className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all"
+              className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white dark:focus:bg-slate-800 transition-all"
             />
             <Search className="h-4 w-4 text-slate-400 absolute left-3 top-2.5" />
           </form>
 
           {/* Search Dropdown Overlay */}
           {searchResults && (
-            <div className="absolute top-11 left-0 right-0 bg-white border border-slate-200 rounded-2xl shadow-xl p-4 z-50 text-xs space-y-3 max-h-96 overflow-y-auto">
-              <div className="flex justify-between items-center pb-2 border-b border-slate-100">
-                <span className="font-bold text-slate-500 uppercase tracking-wider text-[10px]">
-                  Search Results
+            <div className="absolute top-11 left-0 right-0 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-4 z-50 text-xs space-y-3 max-h-96 overflow-y-auto">
+              <div className="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
+                <span className="font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[10px]">
+                  {t('search')} Results
                 </span>
                 <button
                   onClick={() => setSearchResults(null)}
-                  className="text-slate-400 hover:text-slate-700 text-[10px]"
+                  className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-[10px]"
                 >
-                  Close
+                  {t('close')}
                 </button>
               </div>
 
               {searchResults.patients?.length > 0 && (
                 <div>
-                  <h5 className="font-bold text-blue-600 mb-1">Patients</h5>
+                  <h5 className="font-bold text-blue-600 dark:text-blue-400 mb-1">{t('patients')}</h5>
                   {searchResults.patients.map((p: any) => (
-                    <div key={p.id} className="py-1 border-b border-slate-100 text-slate-700 flex justify-between">
+                    <div key={p.id} className="py-1 border-b border-slate-100 dark:border-slate-800 text-slate-700 dark:text-slate-300 flex justify-between">
                       <span><strong>{p.user?.name}</strong> ({p.patientIdCode})</span>
-                      <Link href={`/admin/patients/${p.id}`} onClick={() => setSearchResults(null)} className="text-blue-600 font-bold hover:underline">View</Link>
+                      <Link href={`/admin/patients/${p.id}`} onClick={() => setSearchResults(null)} className="text-blue-600 dark:text-blue-400 font-bold hover:underline">View</Link>
                     </div>
                   ))}
                 </div>
@@ -266,11 +292,11 @@ export default function DashboardShell({ children }: { children: React.ReactNode
 
               {searchResults.doctors?.length > 0 && (
                 <div>
-                  <h5 className="font-bold text-blue-600 mb-1">Doctors</h5>
+                  <h5 className="font-bold text-blue-600 dark:text-blue-400 mb-1">{t('doctors')}</h5>
                   {searchResults.doctors.map((d: any) => (
-                    <div key={d.id} className="py-1 border-b border-slate-100 text-slate-700 flex justify-between">
+                    <div key={d.id} className="py-1 border-b border-slate-100 dark:border-slate-800 text-slate-700 dark:text-slate-300 flex justify-between">
                       <span><strong>{d.user?.name}</strong> ({d.specialty})</span>
-                      <Link href={`/patient/doctors/${d.id}`} onClick={() => setSearchResults(null)} className="text-blue-600 font-bold hover:underline">View Profile</Link>
+                      <Link href={`/patient/doctors/${d.id}`} onClick={() => setSearchResults(null)} className="text-blue-600 dark:text-blue-400 font-bold hover:underline">{t('viewProfile')}</Link>
                     </div>
                   ))}
                 </div>
@@ -279,12 +305,16 @@ export default function DashboardShell({ children }: { children: React.ReactNode
           )}
         </div>
 
-        {/* User Badge & Notifications */}
+        {/* User Controls, Theme & Language */}
         <div className="flex items-center gap-3">
+          {/* THEME TOGGLE (ONLY ONE ICON) & COMPREHENSIVE LANGUAGE SELECTOR */}
+          <ThemeLanguageControls />
+
+          {/* Notifications */}
           <div className="relative">
             <button
               onClick={() => setShowNotifications(!showNotifications)}
-              className="p-2 text-slate-500 hover:text-slate-900 rounded-xl hover:bg-slate-100 relative transition-colors"
+              className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 relative transition-colors"
               title="Notifications"
             >
               <Bell className="h-5 w-5" />
@@ -296,14 +326,14 @@ export default function DashboardShell({ children }: { children: React.ReactNode
             </button>
 
             {showNotifications && (
-              <div className="absolute right-0 top-12 w-80 sm:w-96 bg-white border border-slate-200 rounded-2xl shadow-xl p-4 z-50 text-xs space-y-3">
-                <div className="flex justify-between items-center pb-2 border-b border-slate-100">
+              <div className="absolute right-0 top-12 w-80 sm:w-96 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-4 z-50 text-xs space-y-3">
+                <div className="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-800 uppercase text-[10px] tracking-wider">
+                    <span className="font-bold text-slate-800 dark:text-slate-200 uppercase text-[10px] tracking-wider">
                       Notifications
                     </span>
                     {unreadCount > 0 && (
-                      <span className="px-2 py-0.5 bg-rose-50 text-rose-700 rounded text-[10px] font-bold border border-rose-200">
+                      <span className="px-2 py-0.5 bg-rose-50 dark:bg-rose-950/70 text-rose-700 dark:text-rose-300 rounded text-[10px] font-bold border border-rose-200 dark:border-rose-800">
                         {unreadCount} Unread
                       </span>
                     )}
@@ -311,7 +341,7 @@ export default function DashboardShell({ children }: { children: React.ReactNode
                   {unreadCount > 0 && (
                     <button
                       onClick={handleMarkAllRead}
-                      className="text-[10px] text-blue-600 hover:text-blue-700 font-bold flex items-center gap-1"
+                      className="text-[10px] text-blue-600 dark:text-blue-400 hover:underline font-bold flex items-center gap-1"
                     >
                       <CheckCheck className="h-3 w-3" /> Mark all read
                     </button>
@@ -326,17 +356,17 @@ export default function DashboardShell({ children }: { children: React.ReactNode
                         onClick={() => handleMarkRead(n.id)}
                         className={`p-3 rounded-xl border transition-all cursor-pointer ${
                           !n.isRead
-                            ? 'bg-blue-50/70 border-blue-200 text-slate-900'
-                            : 'bg-slate-50 border-slate-200 text-slate-500'
+                            ? 'bg-blue-50/70 dark:bg-blue-950/50 border-blue-200 dark:border-blue-800 text-slate-900 dark:text-slate-100'
+                            : 'bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400'
                         }`}
                       >
                         <div className="flex justify-between items-start mb-1">
-                          <span className="font-bold text-xs text-slate-900">{n.title}</span>
+                          <span className="font-bold text-xs text-slate-900 dark:text-slate-100">{n.title}</span>
                           <span className="text-[9px] text-slate-400 font-mono">
                             {new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         </div>
-                        <p className="text-[11px] text-slate-600 leading-snug">{n.message}</p>
+                        <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-snug">{n.message}</p>
                       </div>
                     ))
                   ) : (
@@ -357,15 +387,15 @@ export default function DashboardShell({ children }: { children: React.ReactNode
             </span>
           )}
 
-          <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
+          <div className="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-slate-800">
             <div className="text-right hidden lg:block">
-              <p className="text-xs font-bold text-slate-900">{user?.name || 'User'}</p>
-              <p className="text-[10px] text-slate-500">{user?.email}</p>
+              <p className="text-xs font-bold text-slate-900 dark:text-slate-100">{user?.name || 'User'}</p>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">{user?.email}</p>
             </div>
             <button
               onClick={handleLogout}
-              title="Logout"
-              className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
+              title={t('logout')}
+              className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 rounded-xl transition-colors"
             >
               <LogOut className="h-5 w-5" />
             </button>
@@ -375,15 +405,16 @@ export default function DashboardShell({ children }: { children: React.ReactNode
 
       {/* Fixed Layout Container: Fixed Sidebar + Main Scrollable Content */}
       <div className="flex-1 flex relative">
-        {/* Desktop Fixed Sidebar (height: 100vh minus navbar) */}
-        <aside className="fixed top-16 left-0 bottom-0 w-60 bg-white border-r border-slate-200 p-3 hidden md:flex flex-col justify-between z-30">
+        {/* Desktop Fixed Sidebar */}
+        <aside className="fixed top-16 left-0 bottom-0 w-60 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 p-3 hidden md:flex flex-col justify-between z-30">
           <div className="space-y-1">
-            <div className="px-3 py-2 text-[10px] font-extrabold uppercase tracking-widest text-slate-400">
+            <div className="px-3 py-2 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 dark:text-slate-500">
               MAIN MENU
             </div>
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
+              const displayLabel = NAV_KEY_MAP[item.label] ? t(NAV_KEY_MAP[item.label]) : item.label;
               return (
                 <Link
                   key={item.label}
@@ -391,45 +422,46 @@ export default function DashboardShell({ children }: { children: React.ReactNode
                   className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                     isActive
                       ? 'bg-blue-600 text-white shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
                   <Icon className="h-4 w-4 shrink-0" />
-                  <span>{item.label}</span>
+                  <span>{displayLabel}</span>
                 </Link>
               );
             })}
           </div>
 
-          <div className="pt-3 border-t border-slate-200 text-[11px] text-slate-500 text-center">
-            <Link href="/" className="inline-flex items-center gap-1 hover:text-blue-600 transition-colors">
-              <Home className="h-3.5 w-3.5" /> Landing Page
+          <div className="pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 text-center">
+            <Link href="/" className="inline-flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              <Home className="h-3.5 w-3.5" /> {t('landingPage')}
             </Link>
           </div>
         </aside>
 
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="fixed inset-0 z-50 bg-slate-900/40 md:hidden flex flex-col p-4">
-            <div className="bg-white rounded-2xl p-5 flex flex-col max-h-full shadow-xl">
-              <div className="flex justify-between items-center pb-3 border-b border-slate-200 mb-3">
-                <span className="font-bold text-slate-900 text-sm">Navigation Menu</span>
-                <button onClick={() => setMobileMenuOpen(false)} className="text-slate-500 hover:text-slate-900">
+          <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs md:hidden flex flex-col p-4">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 flex flex-col max-h-full shadow-xl">
+              <div className="flex justify-between items-center pb-3 border-b border-slate-200 dark:border-slate-800 mb-3">
+                <span className="font-bold text-slate-900 dark:text-white text-sm">Navigation Menu</span>
+                <button onClick={() => setMobileMenuOpen(false)} className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
                   <X className="h-5 w-5" />
                 </button>
               </div>
               <div className="space-y-1 overflow-y-auto">
                 {navItems.map((item) => {
                   const Icon = item.icon;
+                  const displayLabel = NAV_KEY_MAP[item.label] ? t(NAV_KEY_MAP[item.label]) : item.label;
                   return (
                     <Link
                       key={item.label}
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100"
+                      className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
                     >
                       <Icon className="h-4 w-4" />
-                      <span>{item.label}</span>
+                      <span>{displayLabel}</span>
                     </Link>
                   );
                 })}
@@ -438,8 +470,8 @@ export default function DashboardShell({ children }: { children: React.ReactNode
           </div>
         )}
 
-        {/* Main Content Area (offset by sidebar width ml-60 on desktop) */}
-        <main className="flex-1 ml-0 md:ml-60 p-4 sm:p-6 lg:p-8 bg-slate-50 min-h-[calc(100vh-4rem)]">
+        {/* Main Content Area */}
+        <main className="flex-1 ml-0 md:ml-60 p-4 sm:p-6 lg:p-8 bg-slate-50 dark:bg-slate-950 min-h-[calc(100vh-4rem)]">
           {children}
         </main>
       </div>

@@ -3,10 +3,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import ThemeLanguageControls from '@/components/layout/ThemeLanguageControls';
+import { useI18n } from '@/lib/i18n/I18nContext';
 import { Activity, ShieldCheck, UserPlus, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { t } = useI18n();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -16,8 +19,8 @@ export default function RegisterPage() {
     confirmPassword: '',
     age: 30,
     gender: 'Male',
-    address: 'Springfield, USA',
-    emergencyContact: '+1 (555) 999-0000',
+    address: '123 Main St, India',
+    emergencyContact: '+91 9876543210',
     bloodGroup: 'O+',
     medicalHistory: '',
   });
@@ -62,10 +65,10 @@ export default function RegisterPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to register patient account');
+        throw new Error(data.error || 'Registration failed');
       }
 
-      router.push(data.redirectTo || '/patient/dashboard');
+      router.push('/login?message=Registration successful. Please log in.');
     } catch (err: any) {
       setError(err.message || 'An unexpected error occurred');
     } finally {
@@ -74,24 +77,28 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden transition-colors">
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
+        <ThemeLanguageControls />
+      </div>
+
       <div className="sm:mx-auto sm:w-full sm:max-w-xl text-center z-10">
-        <Link href="/login" className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-slate-900 mb-4 transition-colors">
-          <ArrowLeft className="h-4 w-4" /> Back to Login
+        <Link href="/login" className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white mb-4 transition-colors">
+          <ArrowLeft className="h-4 w-4" /> {t('login')}
         </Link>
-        <div className="inline-flex items-center justify-center p-3 bg-blue-100 rounded-2xl border border-blue-200 text-blue-600 mb-2 shadow-sm">
+        <div className="inline-flex items-center justify-center p-3 bg-blue-100 dark:bg-blue-950 rounded-2xl border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 mb-2 shadow-xs">
           <UserPlus className="h-8 w-8" />
         </div>
-        <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 font-sans">
-          Patient Registration
+        <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white font-sans">
+          {t('register')}
         </h2>
-        <p className="mt-1 text-sm text-slate-600">
+        <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
           Create your patient health portal account
         </p>
       </div>
 
       <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-xl z-10 px-4">
-        <div className="bg-white py-8 px-6 shadow-xl rounded-3xl border border-slate-200 sm:px-10">
+        <div className="bg-white dark:bg-slate-900 py-8 px-6 shadow-xl rounded-3xl border border-slate-200 dark:border-slate-800 sm:px-10">
           {error && (
             <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-center gap-3">
               <ShieldCheck className="h-5 w-5 shrink-0 text-rose-600" />
